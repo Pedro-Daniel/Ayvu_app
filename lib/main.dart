@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
 		return ChangeNotifierProvider(
 			create: (context) => MyAppState(),
 			child: MaterialApp(
-				title: 'Namer App',
+				title: 'Ayvu App',
 				theme: ThemeData(
 					useMaterial3: true,
 					colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
@@ -141,6 +141,7 @@ class SpeakerProfilePage extends StatelessWidget {
         ),
       ),
     );
+
     /*ListView(
 				children: <Widget>[
 						Text('Personal informations:'), Divider(),
