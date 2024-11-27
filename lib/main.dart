@@ -1,9 +1,25 @@
-import 'package:english_words/english_words.dart';
+//import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// libs para teste no desktop:
+import 'dart:io';
+import 'package:window_size/window_size.dart';
+
 
 void main() {
+	WidgetsFlutterBinding.ensureInitialized();
+
+	if (Platform.isLinux || Platform.isWindows) {
+		setWindowTitle('dimensões proporcionais à do Samsung A54 5G');
+		// a resolução do A54 é 2340 x 1080, com uma proporção de 2.166:1 (altura/largura)
+
+		//setWindowMinSize(const Size(300, 650));
+		//setWindowMaxSize(const Size(300, 650));
+
+		setWindowFrame(Rect.fromLTWH(0, 0, 300, 650));
+	}
+	
 	runApp(MyApp());
 }
 
@@ -109,7 +125,7 @@ class BlankPage extends StatelessWidget {
 				mainAxisAlignment: MainAxisAlignment.center,
 				children: [
 					Text('BlankPage'),
-					Placeholder(),
+					//Placeholder(),
 				],
 			),
 		);
@@ -133,16 +149,16 @@ class SpeakerProfilePage extends StatelessWidget {
 
 
 		return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            Text('...'),
-          ],
-        ),
-      ),
-    );
+			body: Center(
+				child: Column(
+					children: [
+						Text('...'),
+					],
+				),
+			),
+		);
 
-    /*ListView(
+		/*ListView(
 				children: <Widget>[
 						Text('Personal informations:'), Divider(),
 
