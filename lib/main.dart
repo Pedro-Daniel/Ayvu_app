@@ -64,12 +64,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
 	// `NavigationDestination()` lables constant strings:
 	static const String homeLabel       = 'home';
+	static const String recordingLabel  = 'recording';
 	static const String assignmentLabel = 'assignment';
 
 
 	var currentPageIndex = 0;
 	var pageWidgetList = <Widget>[
 		BlankPage(),
+		RecordingPage(),
 		SpeakerProfilePage(),
 	];
 
@@ -97,6 +99,13 @@ class _MyHomePageState extends State<MyHomePage> {
 					),
 
 					NavigationDestination(
+						selectedIcon: Icon(Icons.mic_outlined),
+						//icon: Badge(child: Icon(Icons.assignment_outlined)),
+						icon: Icon(Icons.mic_outlined),
+						label: recordingLabel,
+					),
+
+					NavigationDestination(
 						selectedIcon: Icon(Icons.assignment),
 						//icon: Badge(child: Icon(Icons.assignment_outlined)),
 						icon: Icon(Icons.assignment_outlined),
@@ -120,12 +129,31 @@ class BlankPage extends StatelessWidget {
 	Widget build(BuildContext context) {
 		//var appState = context.watch<MyAppState>();
 
-		return Center(
+	  return Center(
 			child: Column(
 				mainAxisAlignment: MainAxisAlignment.center,
 				children: [
 					Text('BlankPage'),
-					//Placeholder(),
+				],
+			),
+		);
+
+	}
+}
+
+
+
+
+class RecordingPage extends StatelessWidget {
+	@override
+	Widget build(BuildContext context) {
+		//var appState = context.watch<MyAppState>();
+
+		return Center(
+			child: Column(
+				mainAxisAlignment: MainAxisAlignment.center,
+				children: [
+					Text('página da gravação'),
 				],
 			),
 		);
@@ -137,76 +165,162 @@ class BlankPage extends StatelessWidget {
 
 
 class SpeakerProfilePage extends StatelessWidget {
+
 	@override
 	Widget build(BuildContext context) {
 		//var appState = context.watch<MyAppState>();
+		bool isChecked = false; // _isChecked
 
+		return Form(
+			//key: _formKey,
 
-		// `TextFormField()` lables constant strings:
-		//const String nameInputLabel      = 'Enter your name:';
-		//const String surnameInputLabel   = 'Enter your surname:';
-		//const String birthDateInputLabel = 'Enter your birth date:';
-
-
-		return Scaffold(
-			body: Center(
-				child: Column(
-					children: [
-						Text('...'),
-					],
-				),
-			),
-		);
-
-		/*ListView(
+			child: Column(
 				children: <Widget>[
-						Text('Personal informations:'), Divider(),
 
-						Row(
-							children: <Widget>[
-								TextFormField(
-									decoration: const InputDecoration(
-										border: UnderlineInputBorder(),
-										labelText: nameInputLabel,
+					SizedBox(
+						height: 100.0,
+						child: Stack(
+							children: [
+								Placeholder(), // para o campo do áudio da gravação
+								Center(
+									child: Text(
+										'áudio file',
+										style: TextStyle(
+											fontSize: 16,
+											color: Colors.black,
+											fontWeight: FontWeight.bold,
+										),
 									),
 								),
-
-								TextFormField(
-									decoration: const InputDecoration(
-										border: UnderlineInputBorder(),
-										labelText: surnameInputLabel,
-									),
-								),
-
 							],
 						),
+					),
+					const SizedBox(height: 16), // Divider(),
+
+
+					SizedBox(
+						height: 100.0,
+						child: Stack(
+							children: [
+								Placeholder(), // para o campo de geo-localização
+								Center(
+									child: Text(
+										'geolocation',
+										style: TextStyle(
+											fontSize: 16,
+											color: Colors.black,
+											fontWeight: FontWeight.bold,
+										),
+									),
+								),
+							],
+						),
+					),
+					const SizedBox(height: 16), // Divider(),
+
+
+					Text(
+						'Spoken Languages',
+						style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+							fontWeight: FontWeight.bold,
+							color: Theme.of(context).colorScheme.primary,
+						),
+					),
+					const SizedBox(height: 16), // Divider(),
+
+					TextFormField(
+						decoration: const InputDecoration(
+							border: UnderlineInputBorder(),
+							labelText: 'Mother tongue:',
+						),
+					),
+
+					TextFormField(
+						decoration: const InputDecoration(
+							border: UnderlineInputBorder(),
+							labelText: 'Region of origin:',
+						),
+					),
+
+					/*
+					FormField<bool>(
+						initialValue: isChecked,
+
+						validator: (value) {
+							if (value != true) {
+								return 'You must accept the terms and conditions';
+							}
+							return null;
+						},
 						
-						Text('Language informations:'), Divider(),
+						builder: (state) {
+							return Column(
+								crossAxisAlignment: CrossAxisAlignment.start,
+								
+								children: [
+									Row(
+										children: [
+											Checkbox(
+												value: state.value,
+												onChanged: (value) {
+													state.didChange(value);
+												},
+											),
+											const Text('speak more than one language?'),
+										],
+									),
+
+									if (state.hasError)
+										Text(
+											state.errorText!,
+											style: TextStyle(
+												color: Theme.of(context).colorScheme.error,
+												fontSize: 12,
+											),
+										),
+								],
+							);
+						},
+					),
+					 */
+
+					Text(
+						'Personal information',
+						style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+							fontWeight: FontWeight.bold,
+							color: Theme.of(context).colorScheme.primary,
+						),
+					),
+					const SizedBox(height: 16), // Divider(),
+
+					TextFormField(
+						decoration: const InputDecoration(
+							border: UnderlineInputBorder(),
+							labelText: 'Enter your name:',
+						),
+					),
+
+					TextFormField(
+						decoration: const InputDecoration(
+							border: UnderlineInputBorder(),
+							labelText: 'Enter your surname:',
+						),
+					),
+
+					TextFormField(
+						decoration: const InputDecoration(
+							border: UnderlineInputBorder(),
+							labelText: 'Enter your birth date:',
+						),
+					),
+
 				],
-			);*/
+			)
+		);
+
 	}
 }
 
-/*
-- infos pessoais:
-	- nome
-	- sobrenome
-	- gênero
-	- data de nascimento
-- informações linguísticas(!?):
-	- língua mãe
-	- região de origem
-	- possui segunda língua? se sim, quais
-
-possíveis ícones:
-	- account_box
-	- app_registration 
-	- article
-	- assignment
-	- add_circle
-	- add_location
-	- all_inclusive
-*/
 
 /*
 DropdownButton<String>(
