@@ -1,28 +1,21 @@
 //import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io'; // necessário para manipular arquivos e diretórios
 
-// libs para teste no desktop:
-//import 'dart:io';
+// lib para teste no desktop:
 //import 'package:window_size/window_size.dart';
 
 
-void main() {
+void main() { // async
 	/* necessário para acessar funcionalidades específicas
 	 do Flutter antes de inicializar o app
 	 */
-	WidgetsFlutterBinding.ensureInitialized();
+	//WidgetsFlutterBinding.ensureInitialized();
 
-	/*
-	if (Platform.isLinux || Platform.isWindows) {
-		setWindowTitle('dimensões proporcionais à do Samsung A54 5G');
-		// a resolução do A54 é 2340 x 1080, com uma proporção de 2.166:1 (altura/largura)
-
-		//setWindowMinSize(const Size(300, 650));
-		//setWindowMaxSize(const Size(300, 650));
-
-		setWindowFrame(Rect.fromLTWH(0, 0, 300, 650));
-	} */
+	// cria diretório acessado apenas pelo app:
+	//await _createAppDirectory();
 	
 	runApp(MyApp());
 }
@@ -64,6 +57,13 @@ class _MyHomePageState extends State<MyHomePage> {
 	The underscore (_) at the start of _MyHomePageState
 	makes that class private and is enforced by the compiler.
 	*/
+
+	/*
+	@override
+	void initState() {
+		super.initState();
+		_createAppFolder();
+	} */
 
 
 	// `NavigationDestination()` lables constant strings:
@@ -332,3 +332,19 @@ DropdownButton<String>(
 	onChanged: print("dale"),
 ),
 */
+
+/*
+// função para a criação do diretório acessado apenas pelo app:
+Future<void> _createAppDirectory() async {
+	try {
+		final directory = await getApplicationDocumentsDirectory(); // chamada para o sistema
+		final appFolder = Directory('${directory.path}/Ayvu');
+		if (!await appFolder.exists()) { //
+			await appFolder.create();
+			print('Diretório "Ayvu" criado em: ${appFolder.path}');
+			//return appFolder;
+		}
+	} catch (e) {
+		print('Erro ao tentar criar o dir "Ayvu": $e');
+	}
+} */
