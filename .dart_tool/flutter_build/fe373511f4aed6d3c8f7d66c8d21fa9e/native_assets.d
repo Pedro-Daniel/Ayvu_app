@@ -1,1 +1,0 @@
- C:\\Ayvu_copy\\.dart_tool\\flutter_build\\fe373511f4aed6d3c8f7d66c8d21fa9e\\native_assets.yaml: 
