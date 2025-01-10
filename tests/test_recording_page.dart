@@ -3,6 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+// void main() {
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: RecordingPage(),
+//     );
+//   }
+// }
 
 Future<String> startAudioRecording() async {
   FlutterSoundRecorder recorder = FlutterSoundRecorder();
@@ -28,15 +40,17 @@ Future<void> stopAudioRecording(FlutterSoundRecorder recorder) async {
 }
 
 
-class RecordingPage extends StatefulWidget {
-  const RecordingPage({super.key});
+class RecordingPageTST extends StatefulWidget {
+  const RecordingPageTST({super.key});
+
+	static const routeName = '/';
 
   @override
 
   _RecordingPageState createState() => _RecordingPageState();
 }
 
-class _RecordingPageState extends State<RecordingPage> {
+class _RecordingPageState extends State<RecordingPageTST> {
   FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   bool _isRecording = false;
   String _statusText = 'Pressione para gravar';
@@ -88,26 +102,41 @@ class _RecordingPageState extends State<RecordingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Página da Gravação',
-            style: TextStyle(fontSize: 24),
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _toggleRecording,
-            child: Text(_isRecording ? 'Parar Gravação' : 'Iniciar Gravação'),
-          ),
-          SizedBox(height: 20),
-          Text(
-            _statusText,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Scaffold(
+			appBar: AppBar(
+        title: const Text('Recording Area'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              // Navigator.push(context, MaterialPageRoute(builder: (context) => SpeakerProfilePage(),));
+							Navigator.pop(context);
+            },
           ),
         ],
       ),
-    );
+
+			body: Center(
+				child: Column(
+					mainAxisAlignment: MainAxisAlignment.center,
+					children: [
+						Text(
+							'Página da Gravação',
+							style: TextStyle(fontSize: 24),
+						),
+						SizedBox(height: 20),
+						ElevatedButton(
+							onPressed: _toggleRecording,
+							child: Text(_isRecording ? 'Parar Gravação' : 'Iniciar Gravação'),
+						),
+						SizedBox(height: 20),
+						Text(
+							_statusText,
+							style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+						),
+					],
+				),
+			),
+		);
   }
 }

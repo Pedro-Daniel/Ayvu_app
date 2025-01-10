@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 
 
-class RecordingPage extends StatelessWidget {
+class RecordingPageFTVZ extends StatelessWidget {
 
 @override
 Widget build(BuildContext context) {
