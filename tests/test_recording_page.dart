@@ -105,15 +105,21 @@ class _RecordingPageState extends State<RecordingPageTST> {
     return Scaffold(
 			appBar: AppBar(
         title: const Text('Recording Area'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => SpeakerProfilePage(),));
-							Navigator.pop(context);
-            },
-          ),
-        ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.popUntil(context, (route) => route.isFirst);
+        },
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.arrow_back),
+        //     onPressed: () {
+        //       // Navigator.push(context, MaterialPageRoute(builder: (context) => SpeakerProfilePage(),));
+				// 			Navigator.popUntil(context, (route) => route.isFirst);
+        //     },
+        //   ),
+        // ],
+        ),
       ),
 
 			body: Center(
