@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -15,7 +15,7 @@ Future<String> startAudioRecording() async {
 
 
   await recorder.startRecorder(
-    toFile: '/storage/emulated/0/Download/audio_recording.aac'
+    toFile: '/storage/emulated/0/Download/audio_recording.aac',
     codec: Codec.aacADTS,
   );
   
@@ -32,10 +32,10 @@ class RecordingPage extends StatefulWidget {
 
   @override
 
-  _RecordingPageState createState() => _RecordingPageState();
+  RecordingPageState createState() => RecordingPageState();
 }
 
-class _RecordingPageState extends State<RecordingPage> {
+class RecordingPageState extends State<RecordingPage> {
   FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   bool _isRecording = false;
   String _statusText = 'Pressione para gravar';
