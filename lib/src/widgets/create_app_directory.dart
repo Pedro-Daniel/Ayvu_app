@@ -1,4 +1,4 @@
-import 'dart:io'; // necessário para manipular arquivos e diretórios
+//import 'dart:io'; // necessário para manipular arquivos e diretórios
 
 
 /*

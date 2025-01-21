@@ -16,7 +16,7 @@ Future<String> startAudioRecording() async {
 
   await recorder.startRecorder(
     // Acredito que ao alterar esse diretório para um diretório do projeto as gravações ficam mais acessíveis (PD)
-    toFile: '/storage/emulated/0/Download/audio_recording.aac',
+    toFile: '/storage/emulated/0/Download/audio_recording.aac',,
     codec: Codec.aacADTS,
   );
   
@@ -33,10 +33,10 @@ class RecordingPage extends StatefulWidget {
 
   @override
 
-  _RecordingPageState createState() => _RecordingPageState();
+  RecordingPageState createState() => RecordingPageState();
 }
 
-class _RecordingPageState extends State<RecordingPage> {
+class RecordingPageState extends State<RecordingPage> {
   FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   bool _isRecording = false;
   String _statusText = 'Pressione para gravar';
