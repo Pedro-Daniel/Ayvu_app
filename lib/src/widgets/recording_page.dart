@@ -16,7 +16,7 @@ Future<String> startAudioRecording() async {
 
   await recorder.startRecorder(
     // Acredito que ao alterar esse diretório para um diretório do projeto as gravações ficam mais acessíveis (PD)
-    toFile: '/storage/emulated/0/Download/audio_recording.aac',,
+    toFile: '/storage/emulated/0/Download/audio_recording.aac',
     codec: Codec.aacADTS,
   );
   
