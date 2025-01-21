@@ -11,7 +11,6 @@ class MyAppState extends ChangeNotifier {
 	// ...
 }
 
-
 class MyHomePage extends StatefulWidget {
 	@override
 	State<MyHomePage> createState() => _MyHomePageState();
@@ -58,21 +57,21 @@ class _MyHomePageState extends State<MyHomePage> {
 					NavigationDestination(
 						selectedIcon: Icon(Icons.home),
 						icon: Icon(Icons.home_outlined),
-						label: 'home',
+						label: 'Home',
 					),
 
 					NavigationDestination(
 						selectedIcon: Icon(Icons.mic_outlined),
 						//icon: Badge(child: Icon(Icons.assignment_outlined)),
 						icon: Icon(Icons.mic_outlined),
-						label: 'recording',
+						label: 'Recording',
 					),
 
 					NavigationDestination(
 						selectedIcon: Icon(Icons.assignment),
 						//icon: Badge(child: Icon(Icons.assignment_outlined)),
 						icon: Icon(Icons.assignment_outlined),
-						label: 'assignment',
+						label: 'Assignment',
 					),
 
 				],
