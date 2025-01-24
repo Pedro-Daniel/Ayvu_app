@@ -1,19 +1,6 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: RecordingPage(),
-    );
-  }
-}
-
-class RecordingPage extends StatelessWidget {
+class RecordingPageNew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context); // Obtém o tema atual para usar as cores padrão
@@ -69,7 +56,7 @@ class RecordingPage extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                "O",
+                "Record Now",
                 style: TextStyle(fontSize: 14),
               ),
             ),
