@@ -120,18 +120,18 @@ Widget build(BuildContext context) {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => RecordingPageNew(),
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RecordingPageNew(),
+                    ),
+                  );
                 },
                 child: const Text("Record now"),
               ),
               const SizedBox(height: 16),
               const Center(child: Text("or")),
-
+              const SizedBox(height: 16),
 
 
 
@@ -149,7 +149,7 @@ Widget build(BuildContext context) {
 
 
 
-
+              const SizedBox(height: 16),
             ],
           ),
         ),

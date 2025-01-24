@@ -1,3 +1,4 @@
+import 'package:ayvu_app/src/widgets/side_panel.dart';
 import 'package:flutter/material.dart';
 
 class DatabankPage extends StatelessWidget {
@@ -5,46 +6,33 @@ class DatabankPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Databank"),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
+        // title: const Text("Ayvu"),
+        actions: [
+          // Header com imagem e ícone de menu
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
+            width: 130,
+            child: Placeholder(), // Substituir pela imagem real
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: "Account",
+           
+          IconButton(
+          icon: const Icon(Icons.menu),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SidePanel(),
+                ),
+              );
+            },
           ),
         ],
-        currentIndex: 0,
-        onTap: (value) {
-          // Handle navigation
-        },
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header com imagem e ícone de menu
-            Row(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  width: 130,
-                  child: Placeholder(), // Substituir pela imagem real
-                ),
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () {
-                    // Handle menu action
-                  },
-                ),
-              ],
-            ),
             const SizedBox(height: 16),
             // Título principal
             Text(
@@ -62,7 +50,7 @@ class DatabankPage extends StatelessWidget {
             buildSearchField(
               context: context,
               label: "Search speaker",
-              hint: "Enter Text",
+              hint: "Enter speaker",
               onTapSearch: () {
                 // Handle search action
               },
@@ -71,7 +59,7 @@ class DatabankPage extends StatelessWidget {
             buildSearchField(
               context: context,
               label: "Search language",
-              hint: "Enter Text",
+              hint: "Enter language",
               onTapSearch: () {
                 // Handle search action
               },
@@ -80,7 +68,7 @@ class DatabankPage extends StatelessWidget {
             buildSearchField(
               context: context,
               label: "Search recording",
-              hint: "Enter Text",
+              hint: "Enter recording name",
               onTapSearch: () {
                 // Handle search action
               },
@@ -108,7 +96,7 @@ class DatabankPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.0),
               ),
               filled: true,
-              fillColor: Theme.of(context).colorScheme.surfaceVariant,
+              fillColor: Theme.of(context).colorScheme.surfaceContainerHigh,
               contentPadding: const EdgeInsets.symmetric(
                 vertical: 12,
                 horizontal: 16,

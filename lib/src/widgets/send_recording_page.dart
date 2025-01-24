@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(useMaterial3: true, colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue)),
-      home: const SendRecordingPage(),
-    );
-  }
-}
-
 class SendRecordingPage extends StatelessWidget {
   const SendRecordingPage({super.key});
 
@@ -65,20 +49,6 @@ class SendRecordingPage extends StatelessWidget {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: 0,
-        onDestinationSelected: (index) {},
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.account_circle),
-            label: "Account",
-          ),
-        ],
       ),
     );
   }

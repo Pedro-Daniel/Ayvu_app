@@ -1,3 +1,4 @@
+import 'package:ayvu_app/src/widgets/send_recording_page.dart';
 import 'package:flutter/material.dart';
 
 
@@ -6,12 +7,6 @@ class UploadPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            // Ação para voltar
-          },
-        ),
         title: Text(
           'Upload your recording!',
           style: Theme.of(context).textTheme.titleLarge,
@@ -72,9 +67,15 @@ class UploadPage extends StatelessWidget {
             ),
             // Botão de upload
             Center(
+              //Lógica de armazenamento, parada, etc da gravação aqui! (PD)
               child: ElevatedButton(
                 onPressed: () {
-                  // Ação para upload
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SendRecordingPage(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(

@@ -1,3 +1,4 @@
+import 'package:ayvu_app/src/widgets/send_recording_page.dart';
 import 'package:flutter/material.dart';
 
 class RecordingPageNew extends StatelessWidget {
@@ -8,12 +9,6 @@ class RecordingPageNew extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Upload your recording!'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            // Ação para voltar
-          },
-        ),
       ),
       body: Column(
         children: [
@@ -35,18 +30,23 @@ class RecordingPageNew extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Image.network(
-              "https://picsum.photos/250?image=9",
+            child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.33,
               width: double.infinity,
-              fit: BoxFit.cover,
+              // fit: BoxFit.cover,
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: ElevatedButton(
               onPressed: () {
-                // Lógica para iniciar/parar a gravação
+                //Lógica de armazenamento, parada, etc da gravação aqui! (PD)
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SendRecordingPage(),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
@@ -55,9 +55,9 @@ class RecordingPageNew extends StatelessWidget {
                   MediaQuery.of(context).size.height * 0.12,
                 ),
               ),
-              child: const Text(
+              child: Text(
                 "Record Now",
-                style: TextStyle(fontSize: 14),
+                style: Theme.of(context).textTheme.labelLarge,
               ),
             ),
           ),

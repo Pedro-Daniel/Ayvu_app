@@ -82,7 +82,6 @@ class RecordingPageState extends State<RecordingPage> {
 
   @override
   void dispose() {
-
     super.dispose();
   }
 

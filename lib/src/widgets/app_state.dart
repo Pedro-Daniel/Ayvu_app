@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
 
 import 'package:ayvu_app/src/widgets/databank_page.dart';
-import 'blank_page.dart';
 import 'speaker_profile_page.dart';
 
 
@@ -28,7 +27,6 @@ class _MyHomePageState extends State<MyHomePage> {
 		super.initState();
 		_createAppFolder();
 	} */
-
 
 	var currentPageIndex = 0;
 	var pageWidgetList = <Widget>[
@@ -56,14 +54,14 @@ class _MyHomePageState extends State<MyHomePage> {
 					NavigationDestination(
 						selectedIcon: Icon(Icons.home),
 						icon: Icon(Icons.home_outlined),
-						label: 'Home',
+						label: 'Databank',
 					),
 
 					NavigationDestination(
 						selectedIcon: Icon(Icons.add_circle_sharp),
 						//icon: Badge(child: Icon(Icons.assignment_outlined)),
 						icon: Icon(Icons.add_circle_outline_sharp),
-						label: 'Recording',
+						label: 'Record',
 					),
 
 				],
