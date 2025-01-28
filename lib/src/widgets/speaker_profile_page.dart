@@ -1,5 +1,5 @@
 // import 'package:ayvu_app/src/widgets/recording_page.dart';
-import 'package:ayvu_app/src/widgets/recording_page_new.dart';
+import 'package:ayvu_app/src/widgets/recording_page.dart';
 import 'package:ayvu_app/src/widgets/upload_page.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +33,7 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
 	// }
 
 	@override
-Widget build(BuildContext context) {
+	Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Speaker Profile Page"),
@@ -123,7 +123,7 @@ Widget build(BuildContext context) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RecordingPageNew(),
+                      builder: (context) => RecordingPage(),
                     ),
                   );
                 },
