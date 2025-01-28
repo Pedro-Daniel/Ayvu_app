@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:ayvu_app/src/widgets/databank_page.dart';
 import 'speaker_profile_page.dart';
-import 'popup_page.dart';
-
 
 class MyAppState extends ChangeNotifier {
 	// colocar variáveis de estado aqui:
@@ -33,7 +31,6 @@ class _MyHomePageState extends State<MyHomePage> {
 	var pageWidgetList = <Widget>[
 		DatabankPage(),
 		SpeakerProfilePage(),
-		PopupPage(),
 	];
 
 	@override
@@ -67,12 +64,11 @@ class _MyHomePageState extends State<MyHomePage> {
 						label: 'Record',
 					),
 
-					NavigationDestination(
-						selectedIcon: Icon(Icons.logo_dev),
-						//icon: Badge(child: Icon(Icons.assignment_outlined)),
-						icon: Icon(Icons.logo_dev),
-						label: 'pop-up',
-					),
+					// NavigationDestination(
+					// 	selectedIcon: Icon(Icons.list),
+					// 	icon: Icon(Icons.list),
+					// 	label: 'My recordings',
+					// ),
 
 				],
 			),

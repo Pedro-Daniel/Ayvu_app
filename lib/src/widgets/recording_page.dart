@@ -6,8 +6,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 
 
-
-
 class RecordingPage extends StatefulWidget {
   @override
   State<RecordingPage> createState() => _RecordingPageState();
