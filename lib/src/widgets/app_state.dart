@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:ayvu_app/src/widgets/databank_page.dart';
 import 'speaker_profile_page.dart';
 
-
 class MyAppState extends ChangeNotifier {
 	// colocar variáveis de estado aqui:
 	// ...
@@ -47,7 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
 					setState(() {
 						currentPageIndex = index;
 					});
-				},
+				}, // () => _changeDestination(index),
+				
 				//indicatorColor: Colors.amber,
 				selectedIndex: currentPageIndex,
 				destinations: const <Widget>[
@@ -63,6 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
 						icon: Icon(Icons.add_circle_outline_sharp),
 						label: 'Record',
 					),
+
+					// NavigationDestination(
+					// 	selectedIcon: Icon(Icons.list),
+					// 	icon: Icon(Icons.list),
+					// 	label: 'My recordings',
+					// ),
 
 				],
 			),

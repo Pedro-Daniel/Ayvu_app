@@ -19,7 +19,7 @@ class SendRecordingPage extends StatelessWidget {
             children: [
               Text(
                 "Speaker data: Speaker name, age. From place. Speaking language. Speech context: "
-                "Blablablablablablablabla blablablablablablablablablablablablablabla.",
+                "Some text...",
                 style: theme.textTheme.bodyMedium,
               ),
               const SizedBox(height: 16),

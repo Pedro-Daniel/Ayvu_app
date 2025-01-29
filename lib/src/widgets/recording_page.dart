@@ -1,110 +1,175 @@
+import 'package:ayvu_app/src/widgets/send_recording_page.dart';
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+
+// pacotes para implementar a gravação de áudio:
 import 'package:permission_handler/permission_handler.dart';
-
-
-Future<String> startAudioRecording() async {
-  FlutterSoundRecorder recorder = FlutterSoundRecorder();
-
-
-  PermissionStatus permissionStatus = await Permission.microphone.request();
-  if (permissionStatus != PermissionStatus.granted) {
-    return 'Permissão para o microfone não concedida!';
-  }
-
-
-  await recorder.startRecorder(
-    // Acredito que ao alterar esse diretório para um diretório do projeto as gravações ficam mais acessíveis (PD)
-    toFile: '/storage/emulated/0/Download/audio_recording.aac',
-    codec: Codec.aacADTS,
-  );
-  
-  return 'Gravando...';
-}
-
-Future<void> stopAudioRecording(FlutterSoundRecorder recorder) async {
-  await recorder.stopRecorder();
-}
+import 'package:flutter_sound/flutter_sound.dart';
 
 
 class RecordingPage extends StatefulWidget {
-  const RecordingPage({super.key});
-
   @override
-
-  RecordingPageState createState() => RecordingPageState();
+  State<RecordingPage> createState() => _RecordingPageState();
 }
 
-class RecordingPageState extends State<RecordingPage> {
-  FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-  bool _isRecording = false;
-  String _statusText = 'Pressione para gravar';
 
+class _RecordingPageState extends State<RecordingPage> {
+	FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  bool _isRecording   = false;
+  String _statusText  = 'Press to Record';
+  int _recordingCount = 0;
 
-  Future<void> _toggleRecording() async {
-    if (_isRecording) {
+	@override
+  void initState() {
+    super.initState();
+    _initializeRecorder();
+  }
 
-      await _recorder.stopRecorder();
+  Future<void> _initializeRecorder() async {
+    try {
+      await _recorder.openRecorder();
+    } catch (e) {
       setState(() {
-        _isRecording = false;
-        _statusText = 'Gravação parada';
-      });
-    } else {
-
-      PermissionStatus permissionStatus = await Permission.microphone.request();
-      if (permissionStatus != PermissionStatus.granted) {
-        setState(() {
-          _statusText = 'Permissão para o microfone não concedida';
-        });
-        return;
-      }
-
-
-      await _recorder.startRecorder(
-        toFile: '/storage/emulated/0/Download/audio_recording.aac',
-
-        codec: Codec.aacADTS,
-      );
-      setState(() {
-        _isRecording = true;
-        _statusText = 'Gravando...';
+        _statusText = 'Recording Erro: $e';
       });
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
+	Future<void> _toggleRecording() async {
+    if (_isRecording) {
+      await _recorder.stopRecorder();
+      setState(() {
+        _isRecording = false;
+        _statusText = 'Stoping Recording';
+      });
+    } else {
 
-    _recorder = FlutterSoundRecorder();
+      // Solicitar permissão para o microfone
+      PermissionStatus permissionStatus = await Permission.microphone.request();
+      if (permissionStatus != PermissionStatus.granted) {
+        setState(() {
+          _statusText = 'No Permission';
+        });
+        return;
+      }
+
+      _recordingCount++;
+
+      // Obter o diretório de documentos do aplicativo
+      //final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final String filePath = '/storage/emulated/0/Download/audio_recording_$_recordingCount.aac';
+
+      try {
+        await _recorder.startRecorder(
+          toFile: filePath,
+          codec: Codec.aacADTS,
+        );
+        setState(() {
+          _isRecording = true;
+          _statusText = 'Recording...';
+        });
+      } catch (e) {
+        setState(() {
+          _statusText = 'Erro: $e';
+        });
+      }
+    }
   }
-
-  @override
+	
+	@override
   void dispose() {
+    _recorder.closeRecorder();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Upload your recording!'),
+      ),
+      body: Column(
         children: [
-          Text(
-            'Página da Gravação',
-            style: TextStyle(fontSize: 24),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text(
+                  "Recording time: 0.00",
+                  style: TextStyle(fontSize: 14),
+                ),
+                Text(
+                  "Max: 1 hour",
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
+            ),
           ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _toggleRecording,
-            child: Text(_isRecording ? 'Parar Gravação' : 'Iniciar Gravação'),
+
+          SizedBox(
+						height: MediaQuery.of(context).size.height * 0.1,
+						width: double.infinity,
+						//fit: BoxFit.cover,
+					),
+
+
+
+
+					ElevatedButton(
+						onPressed: _toggleRecording,
+						child: Text(_isRecording ? 'Stop Record' : 'Start Record'),
+					),
+					SizedBox(
+						height: MediaQuery.of(context).size.height * 0.1,
+						width: double.infinity,
+						//fit: BoxFit.cover,
+					),
+
+					Text(
+						_statusText,
+						style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+					),
+
+
+
+
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: ElevatedButton(
+              onPressed: () {
+                //Lógica de armazenamento, parada, etc da gravação aqui! (PD)
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SendRecordingPage(),
+                  ),
+                );
+              },
+							/*
+              style: ElevatedButton.styleFrom(
+                backgroundColor: theme.colorScheme.primary,
+                minimumSize: Size(
+                  MediaQuery.of(context).size.width * 0.6,
+                  MediaQuery.of(context).size.height * 0.12,
+                ),
+              ),
+							 */
+              child: Text(
+                "ir para 'send_recording_page' (mudar)", //"Record Now",
+                //style: Theme.of(context).textTheme.labelLarge,
+              ),
+            ),
           ),
-          SizedBox(height: 20),
-          Text(
-            _statusText,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 5),
+            child: Text(
+              "Click to start/stop Recording",
+              style: TextStyle(fontSize: 14),
+            ),
           ),
+
         ],
       ),
     );
