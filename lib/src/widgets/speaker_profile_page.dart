@@ -16,12 +16,14 @@ class SpeakerProfilePage extends StatefulWidget {
 class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _recordlanguageController = TextEditingController();
-  final _mothertongueController = TextEditingController();
+  //final _recordlanguageController = TextEditingController();
+  //final _mothertongueController = TextEditingController();
   final _conversationController = TextEditingController();
   final _regionController = TextEditingController();
   final _birthDateController = TextEditingController();
-  final _genderController = TextEditingController();
+  //final _genderController = TextEditingController();
+
+  final DatabaseHelper _dbHelper = DatabaseHelper();
 
   String location = "";
   String birthYear = "";
@@ -31,22 +33,63 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
   String _gpsData = '';
   String _errorMessage = '';
 
-  // final _fields = <String, TextEditingController>{
-  // 	'Mother tongue': TextEditingController(),
-  // 	'Region of origin': TextEditingController(),
-  // 	'Name': TextEditingController(),
-  // 	'Surname': TextEditingController(),
-  // 	'Birth date': TextEditingController(),
-  // // }
+  Future<void> _saveData() async {
+    print("Apos aqui estará os campos");
+    print({
+      'name': _nameController.text,
+      'region': _regionController.text,
+      'conversation': _conversationController.text,
+      'birthDate': _birthDateController.text,
+    });
+    await _dbHelper.insertUser({
+      'name': _nameController,
+      //'language_recorder': _recordlanguageController.text,
+      //'language_mother': _mothertongueController.text,
+      'region': _regionController.text,
+      'conversation': _conversationController.text,
+      //'gender': _genderController.text,
+      'birthDate': _birthDateController.text,
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Dados salvos com sucesso!')),
+    );
+  }
 
-  // bool get _allFieldsFilled =>
-  // 		_fields.values.every((controller) => controller.text.isNotEmpty);
+  Future<void> _clearDatabase() async {
+    await _dbHelper.clearDatabase();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Banco de dados limpo com sucesso!')),
+    );
+  }
 
-  // @override
-  // void dispose() {
-  // 	_fields.values.forEach((controller) => controller.dispose());
-  // 	super.dispose();
-  // }
+  Future<void> _fetchData() async {
+    final data = await _dbHelper.fetchUsers();
+    _showDataDialog(data);
+  }
+
+  void _showDataDialog(List<Map<String, dynamic>> data) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Dados Salvos'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: data.map((user) {
+              return Text(
+                'Nome: ${user['name']}, Região de origem: ${user['region']}, Nascimento: ${user['birthDate']},',
+              );
+            }).toList(),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Fechar'),
+          ),
+        ],
+      ),
+    );
+  }
 
   Future<void> _getGpsData() async {
     try {
@@ -154,6 +197,7 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
                 children: [
                   Expanded(
                     child: CustomTextField(
+                      controllerform: _regionController,
                       label: "Recording region of origin",
                       hintText: "Enter region",
                       info: location,
@@ -174,6 +218,7 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
               ),
               const SizedBox(height: 16),
               CustomTextField(
+                controllerform: _conversationController,
                 label:
                     "Conversation description: What are the speakers talking about?",
                 hintText: "Enter description",
@@ -182,12 +227,14 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
               const SizedBox(height: 24),
               const SectionTitle(title: "Personal information:"),
               CustomTextField(
+                controllerform: _nameController,
                 label: "Full Name",
                 hintText: "Enter your name",
                 info: speakerName,
               ),
               const SizedBox(height: 16),
               CustomTextField(
+                controllerform: _birthDateController,
                 label: "Birth Year",
                 hintText: "Enter year",
                 info: birthYear,
@@ -220,12 +267,20 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
                 },
                 child: const Text("Record now"),
               ),
+              ElevatedButton(
+                onPressed: _fetchData,
+                child: Text('Mostrar banco de dados'),
+              ),
+              ElevatedButton(
+                onPressed: _clearDatabase,
+                child: Text('Limpar banco de dados'),
+              ),
               const SizedBox(height: 16),
               const Center(child: Text("or")),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {
-                  _saveData();
+                onPressed: () async {
+                  await _saveData();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -262,13 +317,18 @@ class CustomTextField extends StatelessWidget {
   final String label;
   final String hintText;
   final String info;
+  final TextEditingController controllerform;
 
   const CustomTextField(
-      {required this.label, required this.hintText, required this.info});
+      {required this.label,
+      required this.hintText,
+      required this.info,
+      required this.controllerform});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controllerform,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return "Please enter some text!";
@@ -305,12 +365,14 @@ class CustomDropdown extends StatelessWidget {
   }
 }
 
-Future<void> _saveData() async {
-  await _dbHelper.insertUser({
-    'name': _nameController.text,
-    'surname': _surnameController.text,
-    'language': _languageController.text,
-    'region': _regionController.text,
-    'birthDate': _birthDateController.text,
-  });
-}
+//Future<void> _saveData() async {
+  //await _dbHelper.insertUser({
+    //'name': _nameController.text,
+    //'language_recorder': _recordlanguageController.text,
+    //'language_mother': _mothertongueController.text,
+    //'region': _regionController.text,
+    //'conversation': _conversationController.text,
+    //'gender': _genderController.text,
+    //'birthDate': _birthDateController.text,
+  //});
+
