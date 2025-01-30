@@ -6,14 +6,23 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'DB/database_helper.dart';
 
 class SpeakerProfilePage extends StatefulWidget {
-	@override
-	_SpeakerProfilePageState createState() => _SpeakerProfilePageState();
+  @override
+  _SpeakerProfilePageState createState() => _SpeakerProfilePageState();
 }
 
 class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
-	final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _recordlanguageController = TextEditingController();
+  final _mothertongueController = TextEditingController();
+  final _conversationController = TextEditingController();
+  final _regionController = TextEditingController();
+  final _birthDateController = TextEditingController();
+  final _genderController = TextEditingController();
+
   String location = "";
   String birthYear = "";
   String speakerName = "";
@@ -22,24 +31,22 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
   String _gpsData = '';
   String _errorMessage = '';
 
-  
-	// final _fields = <String, TextEditingController>{
-	// 	'Mother tongue': TextEditingController(),
-	// 	'Region of origin': TextEditingController(),
-	// 	'Name': TextEditingController(),
-	// 	'Surname': TextEditingController(),
-	// 	'Birth date': TextEditingController(),
-	// // }
+  // final _fields = <String, TextEditingController>{
+  // 	'Mother tongue': TextEditingController(),
+  // 	'Region of origin': TextEditingController(),
+  // 	'Name': TextEditingController(),
+  // 	'Surname': TextEditingController(),
+  // 	'Birth date': TextEditingController(),
+  // // }
 
-	// bool get _allFieldsFilled =>
-	// 		_fields.values.every((controller) => controller.text.isNotEmpty);
+  // bool get _allFieldsFilled =>
+  // 		_fields.values.every((controller) => controller.text.isNotEmpty);
 
-	// @override
-	// void dispose() {
-	// 	_fields.values.forEach((controller) => controller.dispose());
-	// 	super.dispose();
-	// }
-
+  // @override
+  // void dispose() {
+  // 	_fields.values.forEach((controller) => controller.dispose());
+  // 	super.dispose();
+  // }
 
   Future<void> _getGpsData() async {
     try {
@@ -47,20 +54,26 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
       PermissionStatus storagePermission = await Permission.storage.request();
 
       if (locationPermission != PermissionStatus.granted) {
-        setState(() {_errorMessage = 'Permissão para localização negada.';});
+        setState(() {
+          _errorMessage = 'Permissão para localização negada.';
+        });
         return;
       }
 
       if (storagePermission != PermissionStatus.granted) {
-        setState(() {_errorMessage = 'Permissão para armazenamento negada.';});
+        setState(() {
+          _errorMessage = 'Permissão para armazenamento negada.';
+        });
         return;
       }
 
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
 
       DateTime now = DateTime.now();
       String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(now);
-      String formattedGpsData = '$formattedDate ${position.latitude.toStringAsFixed(2)} ${position.longitude.toStringAsFixed(2)} ${position.altitude.toStringAsFixed(2)}';
+      String formattedGpsData =
+          '$formattedDate ${position.latitude.toStringAsFixed(2)} ${position.longitude.toStringAsFixed(2)} ${position.altitude.toStringAsFixed(2)}';
 
       await _saveGpsDataToFile(formattedGpsData);
 
@@ -75,8 +88,7 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
     }
   }
 
-
-Future<void> _saveGpsDataToFile(String data) async {
+  Future<void> _saveGpsDataToFile(String data) async {
     try {
       String dirPath = '/storage/emulated/0/Download';
       int fileIndex = await _getNextFileIndex(dirPath);
@@ -91,13 +103,11 @@ Future<void> _saveGpsDataToFile(String data) async {
     }
   }
 
-
   Future<int> _getNextFileIndex(String dirPath) async {
     final dir = Directory(dirPath);
     final files = await dir.list().toList();
-    final geolocatorFiles = files
-      .where((file) => file.path.contains('geolocator_'))
-      .toList();
+    final geolocatorFiles =
+        files.where((file) => file.path.contains('geolocator_')).toList();
 
     int maxIndex = 0;
     for (var file in geolocatorFiles) {
@@ -112,9 +122,8 @@ Future<void> _saveGpsDataToFile(String data) async {
     return maxIndex + 1;
   }
 
-
-	@override
-	Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Speaker Profile Page"),
@@ -129,14 +138,13 @@ Future<void> _saveGpsDataToFile(String data) async {
               const CustomDropdown(
                 items: ["Português", "Inglês", "Espanhol"],
                 hintText: "Recorded language",
-                
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {},
                 child: const Text("Didn't find your language?"),
               ),
-                          const CustomDropdown(
+              const CustomDropdown(
                 items: ["Português", "Inglês", "Espanhol"],
                 hintText: "Speaker's mother tongue",
               ),
@@ -152,31 +160,26 @@ Future<void> _saveGpsDataToFile(String data) async {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.add_location_rounded),
-                    onPressed: () {
-                      if (_errorMessage != "" || _errorMessage.isNotEmpty) {
-                        PopupHelper().buildPopup(context, "Ops...", _errorMessage);
-                      }
-                      _getGpsData();
-                      print(_gpsData == "");
-                      print(_gpsData);
-                    }
-                  ),
+                      icon: const Icon(Icons.add_location_rounded),
+                      onPressed: () {
+                        if (_errorMessage != "" || _errorMessage.isNotEmpty) {
+                          PopupHelper()
+                              .buildPopup(context, "Ops...", _errorMessage);
+                        }
+                        _getGpsData();
+                        print(_gpsData == "");
+                        print(_gpsData);
+                      }),
                 ],
               ),
               const SizedBox(height: 16),
-
-
-
               CustomTextField(
-                label: "Conversation description: What are the speakers talking about?",
+                label:
+                    "Conversation description: What are the speakers talking about?",
                 hintText: "Enter description",
                 info: description,
               ),
               const SizedBox(height: 24),
-
-
-
               const SectionTitle(title: "Personal information:"),
               CustomTextField(
                 label: "Full Name",
@@ -220,11 +223,9 @@ Future<void> _saveGpsDataToFile(String data) async {
               const SizedBox(height: 16),
               const Center(child: Text("or")),
               const SizedBox(height: 16),
-
-
-
               ElevatedButton(
                 onPressed: () {
+                  _saveData();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -234,9 +235,6 @@ Future<void> _saveGpsDataToFile(String data) async {
                 },
                 child: const Text("Upload recording at my cell phone"),
               ),
-
-
-
               const SizedBox(height: 16),
             ],
           ),
@@ -260,13 +258,13 @@ class SectionTitle extends StatelessWidget {
   }
 }
 
-
 class CustomTextField extends StatelessWidget {
   final String label;
   final String hintText;
   final String info;
 
-  const CustomTextField({required this.label, required this.hintText, required this.info});
+  const CustomTextField(
+      {required this.label, required this.hintText, required this.info});
 
   @override
   Widget build(BuildContext context) {
@@ -285,9 +283,6 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class CustomDropdown extends StatelessWidget {
   final List<String> items;
@@ -308,4 +303,14 @@ class CustomDropdown extends StatelessWidget {
       onChanged: (value) {},
     );
   }
+}
+
+Future<void> _saveData() async {
+  await _dbHelper.insertUser({
+    'name': _nameController.text,
+    'surname': _surnameController.text,
+    'language': _languageController.text,
+    'region': _regionController.text,
+    'birthDate': _birthDateController.text,
+  });
 }
