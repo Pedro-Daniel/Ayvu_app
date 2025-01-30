@@ -42,12 +42,12 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
       'birthDate': _birthDateController.text,
     });
     await _dbHelper.insertUser({
-      'name': _nameController,
-      //'language_recorder': _recordlanguageController.text,
-      //'language_mother': _mothertongueController.text,
+      'name': _nameController.text,
+      'language_mother': 'text',
+      'language_recorder': 'fds',
       'region': _regionController.text,
       'conversation': _conversationController.text,
-      //'gender': _genderController.text,
+      'gender': 'ds',
       'birthDate': _birthDateController.text,
     });
     ScaffoldMessenger.of(context).showSnackBar(
