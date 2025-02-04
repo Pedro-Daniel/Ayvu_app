@@ -16,12 +16,12 @@ class SpeakerProfilePage extends StatefulWidget {
 class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  //final _recordlanguageController = TextEditingController();
-  //final _mothertongueController = TextEditingController();
+  String? _controllerSpokenLanguage; // Controlador para o dropdown de idioma
+  String? _controllerMotherTongue; // Controlador para língua materna
+  String? _controllerGender; // Controlador para gênero
   final _conversationController = TextEditingController();
   final _regionController = TextEditingController();
   final _birthDateController = TextEditingController();
-  //final _genderController = TextEditingController();
 
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
@@ -40,14 +40,17 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
       'region': _regionController.text,
       'conversation': _conversationController.text,
       'birthDate': _birthDateController.text,
+      'language_mother': _controllerMotherTongue,
+      'language_recorder': _controllerSpokenLanguage,
+      'gender': _controllerGender,
     });
     await _dbHelper.insertUser({
       'name': _nameController.text,
-      'language_mother': 'text',
-      'language_recorder': 'fds',
+      'language_mother': _controllerMotherTongue,
+      'language_recorder': _controllerSpokenLanguage,
       'region': _regionController.text,
       'conversation': _conversationController.text,
-      'gender': 'ds',
+      'gender': _controllerGender,
       'birthDate': _birthDateController.text,
     });
     ScaffoldMessenger.of(context).showSnackBar(
@@ -76,7 +79,7 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
           child: Column(
             children: data.map((user) {
               return Text(
-                'Nome: ${user['name']}, Região de origem: ${user['region']}, Nascimento: ${user['birthDate']},',
+                'Nome: ${user['name']}, Região de origem: ${user['region']}, Nascimento: ${user['birthDate']}, liguá materna: ${user['language_mother']},lingua gravada: ${user['language_recorder']},Descrição da conversa: ${user['conversation']}, Gênero: ${user['gender']}',
               );
             }).toList(),
           ),
@@ -178,18 +181,28 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
           child: ListView(
             children: [
               const SectionTitle(title: "Spoken Languages"),
-              const CustomDropdown(
-                items: ["Português", "Inglês", "Espanhol"],
+              CustomDropdown(
+                items: const ["Português", "Inglês", "Espanhol"],
                 hintText: "Recorded language",
+                onChanged: (value) {
+                  setState(() {
+                    _controllerSpokenLanguage = value;
+                  });
+                },
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {},
                 child: const Text("Didn't find your language?"),
               ),
-              const CustomDropdown(
-                items: ["Português", "Inglês", "Espanhol"],
+              CustomDropdown(
+                items: const ["Português", "Inglês", "Espanhol"],
                 hintText: "Speaker's mother tongue",
+                onChanged: (value) {
+                  setState(() {
+                    _controllerMotherTongue = value;
+                  });
+                },
               ),
               const SizedBox(height: 24),
               const SectionTitle(title: "Conversation background:"),
@@ -241,9 +254,14 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
               ),
               const SizedBox(height: 16),
               const SectionTitle(title: "Gender:"),
-              const CustomDropdown(
-                items: ["Female", "Male", "N/C"],
+              CustomDropdown(
+                items: const ["Female", "Male", "N/C"],
                 hintText: "Select Gender",
+                onChanged: (value) {
+                  setState(() {
+                    _controllerGender = value;
+                  });
+                },
               ),
               const SizedBox(height: 16),
               Row(
@@ -347,8 +365,10 @@ class CustomTextField extends StatelessWidget {
 class CustomDropdown extends StatelessWidget {
   final List<String> items;
   final String hintText;
+  final Function(String?)? onChanged;
 
-  const CustomDropdown({required this.items, required this.hintText});
+  const CustomDropdown(
+      {required this.items, required this.hintText, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -360,19 +380,7 @@ class CustomDropdown extends StatelessWidget {
       items: items.map((item) {
         return DropdownMenuItem(value: item, child: Text(item));
       }).toList(),
-      onChanged: (value) {},
+      onChanged: onChanged,
     );
   }
 }
-
-//Future<void> _saveData() async {
-  //await _dbHelper.insertUser({
-    //'name': _nameController.text,
-    //'language_recorder': _recordlanguageController.text,
-    //'language_mother': _mothertongueController.text,
-    //'region': _regionController.text,
-    //'conversation': _conversationController.text,
-    //'gender': _genderController.text,
-    //'birthDate': _birthDateController.text,
-  //});
-

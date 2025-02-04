@@ -52,5 +52,10 @@ class DatabaseHelper {
   Future<void> clearDatabase() async {
     final db = await database;
     await db.delete('users');
+    //final dbPath = join(await getDatabasesPath(), 'user_data.db');
+    //await deleteDatabase(dbPath);
+    //_database =
+    //    null; // Reseta a instância para garantir que um novo banco será criado
+    //print("Banco de dados deletado!");
   }
 }
