@@ -31,8 +31,10 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
 	// 	'Birth date': TextEditingController(),
 	// // }
 
+
 	// bool get _allFieldsFilled =>
 	// 		_fields.values.every((controller) => controller.text.isNotEmpty);
+
 
 	// @override
 	// void dispose() {
@@ -76,7 +78,7 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
   }
 
 
-Future<void> _saveGpsDataToFile(String data) async {
+  Future<void> _saveGpsDataToFile(String data) async {
     try {
       String dirPath = '/storage/emulated/0/Download';
       int fileIndex = await _getNextFileIndex(dirPath);
@@ -285,8 +287,6 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
-
-
 
 
 class CustomDropdown extends StatelessWidget {
