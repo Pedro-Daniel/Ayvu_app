@@ -1,10 +1,61 @@
+import 'package:ayvu_app/src/widgets/DB/database_helper.dart';
 import 'package:flutter/material.dart';
 
-class MyRecsPage extends StatelessWidget {
-  final List<String> recordings = ["2023-01-01", "2023-01-02", "2023-01-03", "2023-01-04", "2023-01-05", "2023-01-06", "2023-01-07", "2023-01-08", "2023-01-09", "2023-01-10", "2023-01-04", "2023-01-11", "2023-01-04", "2023-01-01"];
-
-  // HomeScreen({super.key, required this.recordings});
+class MyRecsPage extends StatefulWidget {
   MyRecsPage({super.key});
+
+  @override
+  State<MyRecsPage> createState() => _MyRecsPageState();
+}
+
+class _MyRecsPageState extends State<MyRecsPage> {
+  List<Map<String, dynamic>> recordings = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRecordings();
+  }
+
+  void _loadRecordings() async {
+    final dbHelper = DatabaseHelper();
+    final data = await dbHelper.getAllRecordings();
+    setState(() {
+      recordings = data;
+    });
+  }
+
+  void _showRecordingDetails(Map<String, dynamic> recording) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Recording Details"),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text("Name: ${recording['name']}"),
+                Text("Mother Language: ${recording['language_mother']}"),
+                Text("Recorder Language: ${recording['language_recorder']}"),
+                Text("Region: ${recording['region']}"),
+                Text("Conversation: ${recording['conversation']}"),
+                Text("Gender: ${recording['gender']}"),
+                Text("Birth Date: ${recording['birthDate']}"),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +71,7 @@ class MyRecsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Search Bar
+            // Barra de pesquisa
             Row(
               children: [
                 Expanded(
@@ -39,60 +90,34 @@ class MyRecsPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Conditional Content
-            if (recordings.isEmpty)
-              const Text(
-                "Currently no recordings",
-                style: TextStyle(fontSize: 16),
-              )
-            else
-              Expanded(
-                child: ListView.builder(
-                  itemCount: recordings.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Lógica para reproduzir ou acessar a gravação
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                          textStyle: const TextStyle(fontSize: 14),
-                        ),
-                        child: Text("Recording ${index + 1}: ${recordings[index]}"),
-                      ),
-                    );
-                  },
-                ),
-              ),
+            // Lista de gravações ou mensagem de vazio
+            Expanded(
+              child: recordings.isEmpty
+                  ? const Center(child: Text("Currently no recordings"))
+                  : ListView.builder(
+                      itemCount: recordings.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _showRecordingDetails(recordings[index]);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 16),
+                              textStyle: const TextStyle(fontSize: 14),
+                            ),
+                            child: Text(
+                                "Recording ${index + 1}: ${recordings[index]['region']}"),
+                          ),
+                        );
+                      },
+                    ),
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-//Ainda não valida recordings com o mesmo nome!!!
-
-
-
-
-
-// void main() {
-//   runApp(const MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       theme: ThemeData(
-//         useMaterial3: true,
-//       ),
-//       home: HomeScreen(recordings: ["2023-01-01", "2023-01-02", "2023-01-03", "2023-01-04", "2023-01-05", "2023-01-06", "2023-01-07", "2023-01-08", "2023-01-09", "2023-01-10", "2023-01-04", "2023-01-11", "2023-01-04", "2023-01-01"]),
-//     );
-//   }
-// }

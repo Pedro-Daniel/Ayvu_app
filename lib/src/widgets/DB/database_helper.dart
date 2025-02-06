@@ -58,4 +58,9 @@ class DatabaseHelper {
     //    null; // Reseta a instância para garantir que um novo banco será criado
     //print("Banco de dados deletado!");
   }
+
+  Future<List<Map<String, dynamic>>> getAllRecordings() async {
+    final db = await database;
+    return await db.query('users');
+  }
 }

@@ -65,35 +65,6 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
     );
   }
 
-  Future<void> _fetchData() async {
-    final data = await _dbHelper.fetchUsers();
-    _showDataDialog(data);
-  }
-
-  void _showDataDialog(List<Map<String, dynamic>> data) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text('Dados Salvos'),
-        content: SingleChildScrollView(
-          child: Column(
-            children: data.map((user) {
-              return Text(
-                'Nome: ${user['name']}, Região de origem: ${user['region']}, Nascimento: ${user['birthDate']}, liguá materna: ${user['language_mother']},lingua gravada: ${user['language_recorder']},Descrição da conversa: ${user['conversation']}, Gênero: ${user['gender']}',
-              );
-            }).toList(),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Fechar'),
-          ),
-        ],
-      ),
-    );
-  }
-
   Future<void> _getGpsData() async {
     try {
       PermissionStatus locationPermission = await Permission.location.request();
@@ -284,10 +255,6 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
                   );
                 },
                 child: const Text("Record now"),
-              ),
-              ElevatedButton(
-                onPressed: _fetchData,
-                child: Text('Mostrar banco de dados'),
               ),
               ElevatedButton(
                 onPressed: _clearDatabase,
