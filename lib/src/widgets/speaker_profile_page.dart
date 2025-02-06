@@ -92,7 +92,7 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
       String formattedGpsData =
           '$formattedDate ${position.latitude.toStringAsFixed(2)} ${position.longitude.toStringAsFixed(2)} ${position.altitude.toStringAsFixed(2)}';
 
-      await _saveGpsDataToFile(formattedGpsData);
+      //await _saveGpsDataToFile(formattedGpsData);
 
       setState(() {
         _gpsData = formattedGpsData;
@@ -105,20 +105,20 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
     }
   }
 
-  Future<void> _saveGpsDataToFile(String data) async {
-    try {
-      String dirPath = '/storage/emulated/0/Download';
-      int fileIndex = await _getNextFileIndex(dirPath);
-      String filePath = '$dirPath/geolocator_$fileIndex.txt';
-      final file = File(filePath);
-      await file.writeAsString('$data\n', mode: FileMode.append);
-      print('GPS Data saved to $filePath');
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Erro ao salvar o arquivo: $e';
-      });
-    }
-  }
+  //Future<void> _saveGpsDataToFile(String data) async {
+  //try {
+  //  String dirPath = '/storage/emulated/0/Download';
+  // int fileIndex = await _getNextFileIndex(dirPath);
+  // String filePath = '$dirPath/geolocator_$fileIndex.txt';
+  //   final file = File(filePath);
+  //await file.writeAsString('$data\n', mode: FileMode.append);
+  //print('GPS Data saved to $filePath');
+  //} catch (e) {
+  //  setState(() {
+  // _errorMessage = 'Erro ao salvar o arquivo: $e';
+  // });
+  // }
+  //}
 
   Future<int> _getNextFileIndex(String dirPath) async {
     final dir = Directory(dirPath);
