@@ -24,7 +24,7 @@ class _RecorderState extends State<Recorder> {
   bool _isRecording = false;
   int _recordingCount = 0;
   String _statusText  = 'Press to Record';
-
+  double? _dbLevel;
 
 
 
@@ -74,10 +74,18 @@ class _RecorderState extends State<Recorder> {
         });
       } catch (e) {
         setState(() {
+          _recorder.onProgress!.listen( (e) {
+            _dbLevel = e.decibels;
+            print('valor de "e": $e');
+            }); // () {}
           _statusText = 'Error'; //_statusText = 'Erro: $e';
         });
       }
     }
+  }
+
+  Future<void> _togglePauseRecording() async {
+    return;
   }
 
 
@@ -115,7 +123,18 @@ class _RecorderState extends State<Recorder> {
                 IconButton(
                   onPressed: _toggleRecording,
                   icon: _isRecording ? Icon(Icons.stop_circle_outlined) : Icon(Icons.mic),
-                  ),
+                ),
+                IconButton(
+                  onPressed: _togglePauseRecording,
+                  icon: _isRecording ? Icon(Icons.pause) : Icon(Icons.pause, color:Theme.of(context).scaffoldBackgroundColor),
+                ),
+                _isRecording ? LinearProgressIndicator(
+                                value: 100.0 / 160.0 * (_dbLevel ?? 1) / 100,
+                                valueColor: const AlwaysStoppedAnimation<Color>(Colors.indigo),
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                )
+                             : Container(),
+
                 Text(
                   _statusText,
                   //style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
