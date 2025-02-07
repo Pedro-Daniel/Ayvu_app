@@ -1,9 +1,15 @@
-import 'package:ayvu_app/src/widgets/send_recording_page.dart';
 import 'package:flutter/material.dart';
-
 // pacotes para implementar a gravação de áudio:
-import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+//import 'package:permission_handler/permission_handler.dart';
+//import 'package:flutter_sound/flutter_sound.dart';
+
+// widgets das páginas
+import 'package:ayvu_app/src/widgets/send_recording_page.dart';
+
+// widgets de utilitários:
+import 'package:ayvu_app/src/widgets_recording/recorder.dart';
+
+
 
 
 class RecordingPage extends StatefulWidget {
@@ -13,80 +19,26 @@ class RecordingPage extends StatefulWidget {
 
 
 class _RecordingPageState extends State<RecordingPage> {
-	FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-  bool _isRecording   = false;
-  String _statusText  = 'Press to Record';
-  int _recordingCount = 0;
 
+  /*
 	@override
   void initState() {
     super.initState();
-    _initializeRecorder();
+    //_initializeRecorder();
   }
 
-  Future<void> _initializeRecorder() async {
-    try {
-      await _recorder.openRecorder();
-    } catch (e) {
-      setState(() {
-        _statusText = 'Recording Erro: $e';
-      });
-    }
-  }
-
-	Future<void> _toggleRecording() async {
-    if (_isRecording) {
-      await _recorder.stopRecorder();
-      setState(() {
-        _isRecording = false;
-        _statusText = 'Stoping Recording';
-      });
-    } else {
-
-      // Solicitar permissão para o microfone
-      PermissionStatus permissionStatus = await Permission.microphone.request();
-      if (permissionStatus != PermissionStatus.granted) {
-        setState(() {
-          _statusText = 'No Permission';
-        });
-        return;
-      }
-
-      _recordingCount++;
-
-      // Obter o diretório de documentos do aplicativo
-      //final Directory appDocDir = await getApplicationDocumentsDirectory();
-      final String filePath = '/storage/emulated/0/Download/audio_recording_$_recordingCount.aac';
-
-      try {
-        await _recorder.startRecorder(
-          toFile: filePath,
-          codec: Codec.aacADTS,
-        );
-        setState(() {
-          _isRecording = true;
-          _statusText = 'Recording...';
-        });
-      } catch (e) {
-        setState(() {
-          _statusText = 'Erro: $e';
-        });
-      }
-    }
-  }
-	
 	@override
   void dispose() {
-    _recorder.closeRecorder();
+    //_recorder.closeRecorder();
     super.dispose();
-  }
+  }  */
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Upload your recording!'),
+        title: const Text('Recording Page'),
       ),
       body: Column(
         children: [
@@ -114,24 +66,7 @@ class _RecordingPageState extends State<RecordingPage> {
 					),
 
 
-
-
-					ElevatedButton(
-						onPressed: _toggleRecording,
-						child: Text(_isRecording ? 'Stop Record' : 'Start Record'),
-					),
-					SizedBox(
-						height: MediaQuery.of(context).size.height * 0.1,
-						width: double.infinity,
-						//fit: BoxFit.cover,
-					),
-
-					Text(
-						_statusText,
-						style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-					),
-
-
+          Recorder(),
 
 
           Padding(
