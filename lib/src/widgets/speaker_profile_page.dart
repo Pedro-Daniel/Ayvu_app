@@ -25,16 +25,12 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
 
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
-  String location = "";
-  String birthYear = "";
-  String speakerName = "";
-  String description = "";
-
   String _gpsData = '';
   String _errorMessage = '';
 
   Future<void> _saveData() async {
     print("Apos aqui estará os campos");
+    print(_gpsData);
     print({
       'name': _nameController.text,
       'region': _regionController.text,
@@ -52,6 +48,7 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
       'conversation': _conversationController.text,
       'gender': _controllerGender,
       'birthDate': _birthDateController.text,
+      'GPS': _gpsData,
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Dados salvos com sucesso!')),
@@ -68,7 +65,7 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
   Future<void> _getGpsData() async {
     try {
       PermissionStatus locationPermission = await Permission.location.request();
-      PermissionStatus storagePermission = await Permission.storage.request();
+      //PermissionStatus storagePermission = await Permission.storage.request();
 
       if (locationPermission != PermissionStatus.granted) {
         setState(() {
@@ -77,12 +74,12 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
         return;
       }
 
-      if (storagePermission != PermissionStatus.granted) {
-        setState(() {
-          _errorMessage = 'Permissão para armazenamento negada.';
-        });
-        return;
-      }
+      //   if (storagePermission != PermissionStatus.granted) {
+      //    setState(() {
+      //      _errorMessage = 'Permissão para armazenamento negada.';
+      //    });
+      //  return;
+      //  }
 
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
@@ -120,24 +117,24 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
   // }
   //}
 
-  Future<int> _getNextFileIndex(String dirPath) async {
-    final dir = Directory(dirPath);
-    final files = await dir.list().toList();
-    final geolocatorFiles =
-        files.where((file) => file.path.contains('geolocator_')).toList();
+  // Future<int> _getNextFileIndex(String dirPath) async {
+  //  final dir = Directory(dirPath);
+  //  final files = await dir.list().toList();
+  // final geolocatorFiles =
+  //     files.where((file) => file.path.contains('geolocator_')).toList();
 
-    int maxIndex = 0;
-    for (var file in geolocatorFiles) {
-      final fileName = file.uri.pathSegments.last;
-      final match = RegExp(r'geolocator_(\d+)\.txt').firstMatch(fileName);
-      if (match != null) {
-        final index = int.parse(match.group(1)!);
-        maxIndex = index > maxIndex ? index : maxIndex;
-      }
-    }
+  //   int maxIndex = 0;
+  //  for (var file in geolocatorFiles) {
+  //   final fileName = file.uri.pathSegments.last;
+  //final match = RegExp(r'geolocator_(\d+)\.txt').firstMatch(fileName);
+  //  if (match != null) {
+  //final index = int.parse(match.group(1)!);
+  //  maxIndex = index > maxIndex ? index : maxIndex;
+  // }
+  //}
 
-    return maxIndex + 1;
-  }
+  // return maxIndex + 1;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +181,6 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
                       controllerform: _regionController,
                       label: "Recording region of origin",
                       hintText: "Enter region",
-                      info: location,
                     ),
                   ),
                   IconButton(
@@ -206,7 +202,6 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
                 label:
                     "Conversation description: What are the speakers talking about?",
                 hintText: "Enter description",
-                info: description,
               ),
               const SizedBox(height: 24),
               const SectionTitle(title: "Personal information:"),
@@ -214,14 +209,12 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
                 controllerform: _nameController,
                 label: "Full Name",
                 hintText: "Enter your name",
-                info: speakerName,
               ),
               const SizedBox(height: 16),
               CustomTextField(
                 controllerform: _birthDateController,
                 label: "Birth Year",
                 hintText: "Enter year",
-                info: birthYear,
               ),
               const SizedBox(height: 16),
               const SectionTitle(title: "Gender:"),
@@ -301,13 +294,11 @@ class SectionTitle extends StatelessWidget {
 class CustomTextField extends StatelessWidget {
   final String label;
   final String hintText;
-  final String info;
   final TextEditingController controllerform;
 
   const CustomTextField(
       {required this.label,
       required this.hintText,
-      required this.info,
       required this.controllerform});
 
   @override

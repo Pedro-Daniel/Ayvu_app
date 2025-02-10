@@ -41,7 +41,8 @@ class _MyRecsPageState extends State<MyRecsPage> {
                 Text("Conversation: ${recording['conversation']}"),
                 Text("Gender: ${recording['gender']}"),
                 Text("Birth Date: ${recording['birthDate']}"),
-                Text("Recording: ${recording['recording']}")
+                Text("Recording: ${recording['recording']}"),
+                Text("data e localização: ${recording['GPS']}")
               ],
             ),
           ),
@@ -51,12 +52,13 @@ class _MyRecsPageState extends State<MyRecsPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
+            ),
+            TextButton(
+              child: const Text("Edit"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             )
-            //TextButton(
-            //child: Text('Edit'),
-            //onPressed: ()
-            //)
-            ,
           ],
         );
       },
