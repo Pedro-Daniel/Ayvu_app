@@ -1,4 +1,4 @@
-import 'dart:io';
+//import 'dart:io';
 import 'package:ayvu_app/src/widgets/popup_helper.dart';
 import 'package:ayvu_app/src/widgets/recording_page.dart';
 import 'package:ayvu_app/src/widgets/upload_page.dart';
@@ -239,7 +239,8 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  await _saveData();
                   Navigator.push(
                     context,
                     MaterialPageRoute(

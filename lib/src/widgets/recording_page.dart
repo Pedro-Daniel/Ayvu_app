@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 // pacotes para implementar a gravação de áudio:
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-
+import 'DB/database_helper.dart';
 
 class RecordingPage extends StatefulWidget {
   @override
   State<RecordingPage> createState() => _RecordingPageState();
 }
 
-
 class _RecordingPageState extends State<RecordingPage> {
-	FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-  bool _isRecording   = false;
-  String _statusText  = 'Press to Record';
+  FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  bool _isRecording = false;
+  String _statusText = 'Press to Record';
   int _recordingCount = 0;
+  String _filePath = "";
 
-	@override
+  @override
   void initState() {
     super.initState();
     _initializeRecorder();
@@ -34,7 +34,7 @@ class _RecordingPageState extends State<RecordingPage> {
     }
   }
 
-	Future<void> _toggleRecording() async {
+  Future<void> _toggleRecording() async {
     if (_isRecording) {
       await _recorder.stopRecorder();
       setState(() {
@@ -42,7 +42,6 @@ class _RecordingPageState extends State<RecordingPage> {
         _statusText = 'Stoping Recording';
       });
     } else {
-
       // Solicitar permissão para o microfone
       PermissionStatus permissionStatus = await Permission.microphone.request();
       if (permissionStatus != PermissionStatus.granted) {
@@ -56,11 +55,12 @@ class _RecordingPageState extends State<RecordingPage> {
 
       // Obter o diretório de documentos do aplicativo
       //final Directory appDocDir = await getApplicationDocumentsDirectory();
-      final String filePath = '/storage/emulated/0/Download/audio_recording_$_recordingCount.aac';
+      _filePath =
+          '/storage/emulated/0/Download/audio_recording_$_recordingCount.aac';
 
       try {
         await _recorder.startRecorder(
-          toFile: filePath,
+          toFile: _filePath,
           codec: Codec.aacADTS,
         );
         setState(() {
@@ -74,8 +74,26 @@ class _RecordingPageState extends State<RecordingPage> {
       }
     }
   }
-	
-	@override
+
+  Future<void> _saveRecordingToDatabase() async {
+    if (_filePath.isEmpty) {
+      // Se não houver gravação, não faz nada
+      return;
+    }
+
+    final dbHelper = DatabaseHelper();
+
+    // Obter o último ID inserido no banco de dados
+    final List<Map<String, dynamic>> users = await dbHelper.fetchUsers();
+    if (users.isNotEmpty) {
+      final int lastUserId = users.last['id'];
+
+      // Atualizar a coluna `recording` com o caminho da gravação
+      await dbHelper.updateRecording(lastUserId, _filePath);
+    }
+  }
+
+  @override
   void dispose() {
     _recorder.closeRecorder();
     super.dispose();
@@ -83,7 +101,6 @@ class _RecordingPageState extends State<RecordingPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Upload your recording!'),
@@ -106,38 +123,29 @@ class _RecordingPageState extends State<RecordingPage> {
               ],
             ),
           ),
-
           SizedBox(
-						height: MediaQuery.of(context).size.height * 0.1,
-						width: double.infinity,
-						//fit: BoxFit.cover,
-					),
-
-
-
-
-					ElevatedButton(
-						onPressed: _toggleRecording,
-						child: Text(_isRecording ? 'Stop Record' : 'Start Record'),
-					),
-					SizedBox(
-						height: MediaQuery.of(context).size.height * 0.1,
-						width: double.infinity,
-						//fit: BoxFit.cover,
-					),
-
-					Text(
-						_statusText,
-						style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-					),
-
-
-
-
+            height: MediaQuery.of(context).size.height * 0.1,
+            width: double.infinity,
+            //fit: BoxFit.cover,
+          ),
+          ElevatedButton(
+            onPressed: _toggleRecording,
+            child: Text(_isRecording ? 'Stop Record' : 'Start Record'),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
+            width: double.infinity,
+            //fit: BoxFit.cover,
+          ),
+          Text(
+            _statusText,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                await _saveRecordingToDatabase();
                 //Lógica de armazenamento, parada, etc da gravação aqui! (PD)
                 Navigator.push(
                   context,
@@ -146,7 +154,7 @@ class _RecordingPageState extends State<RecordingPage> {
                   ),
                 );
               },
-							/*
+              /*
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
                 minimumSize: Size(
@@ -161,7 +169,6 @@ class _RecordingPageState extends State<RecordingPage> {
               ),
             ),
           ),
-
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 5),
             child: Text(
@@ -169,7 +176,6 @@ class _RecordingPageState extends State<RecordingPage> {
               style: TextStyle(fontSize: 14),
             ),
           ),
-
         ],
       ),
     );

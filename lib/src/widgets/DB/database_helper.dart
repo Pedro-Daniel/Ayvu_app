@@ -65,4 +65,14 @@ class DatabaseHelper {
     final db = await database;
     return await db.query('users');
   }
+
+  Future<void> updateRecording(int id, String recordingPath) async {
+    final db = await database;
+    await db.update(
+      'users',
+      {'recording': recordingPath},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }

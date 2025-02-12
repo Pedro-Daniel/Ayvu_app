@@ -117,7 +117,7 @@ class _MyRecsPageState extends State<MyRecsPage> {
                               textStyle: const TextStyle(fontSize: 14),
                             ),
                             child: Text(
-                                "Recording ${index + 1}: ${recordings[index]['region']}"),
+                                "Recording ${index + 1}: ${recordings[index]['language_recorder']}"),
                           ),
                         );
                       },
