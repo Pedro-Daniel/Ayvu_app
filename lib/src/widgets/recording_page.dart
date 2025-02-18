@@ -1,5 +1,6 @@
 import 'package:ayvu_app/src/widgets/send_recording_page.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 // pacotes para implementar a gravação de áudio:
 import 'package:permission_handler/permission_handler.dart';
@@ -15,7 +16,6 @@ class _RecordingPageState extends State<RecordingPage> {
   FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   bool _isRecording = false;
   String _statusText = 'Press to Record';
-  int _recordingCount = 0;
   String _filePath = "";
 
   @override
@@ -51,12 +51,11 @@ class _RecordingPageState extends State<RecordingPage> {
         return;
       }
 
-      _recordingCount++;
-
       // Obter o diretório de documentos do aplicativo
       //final Directory appDocDir = await getApplicationDocumentsDirectory();
-      _filePath =
-          '/storage/emulated/0/Download/audio_recording_$_recordingCount.aac';
+      DateTime now = DateTime.now();
+      String formatted = DateFormat('yyyy-MM-dd_HH-mm-ss').format(now);
+      _filePath = '/storage/emulated/0/Download/audio_recording_$formatted.aac';
 
       try {
         await _recorder.startRecorder(
