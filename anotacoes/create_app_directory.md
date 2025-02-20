@@ -1,3 +1,6 @@
+bloco de código comentado:
+
+```
 //import 'dart:io'; // necessário para manipular arquivos e diretórios
 
 
@@ -16,3 +19,4 @@ Future<void> _createAppDirectory() async {
 		print('Erro ao tentar criar o dir "Ayvu": $e');
 	}
 } */
+```

@@ -1,3 +1,5 @@
+import 'package:ayvu_app/src/widgets/about_page.dart';
+import 'package:ayvu_app/src/widgets/my_recs_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -34,7 +36,14 @@ class SidePanel extends StatelessWidget {
               context,
               icon: Icons.keyboard_voice,
               label: "My recordings",
-              onTap: () {},
+              onTap: () { 
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyRecsPage(),
+                  ),
+                );
+              },
             ),
             _buildMenuItem(
               context,
@@ -46,7 +55,14 @@ class SidePanel extends StatelessWidget {
               context,
               icon: Icons.code,
               label: "About devs",
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AboutPage(),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -75,7 +91,7 @@ class SidePanel extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 14,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ],
