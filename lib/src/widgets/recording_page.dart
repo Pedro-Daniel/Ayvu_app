@@ -1,3 +1,5 @@
+// import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 // pacotes para implementar a gravação de áudio:
@@ -55,6 +57,7 @@ class _RecordingPageState extends State<RecordingPage> {
       if (!_isRecording) {
 				setState(() {
         	_statusText = 'Recording Stoped';
+          
       	});
 			}	
 			});
@@ -83,6 +86,7 @@ class _RecordingPageState extends State<RecordingPage> {
         setState(() {
           _isRecording = true;
           _statusText = 'Recording...';
+
         });
       } catch (e) {
         setState(() {
@@ -147,21 +151,21 @@ class _RecordingPageState extends State<RecordingPage> {
           ),
 
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
+            height: MediaQuery.of(context).size.height * 0.25,
             width: double.infinity,
             //fit: BoxFit.cover,
           ),
 
-          ElevatedButton(
-            onPressed: _toggleRecording,
-            child: Text(_isRecording ? 'Stop Record' : 'Start Record'),
-          ),
+          // ElevatedButton(
+          //   onPressed: _toggleRecording,
+          //   child: Text(_isRecording ? 'Stop Record' : 'Start Record'),
+          // ),
 
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
-            width: double.infinity,
-            //fit: BoxFit.cover,
-          ),
+          // SizedBox(
+          //   height: MediaQuery.of(context).size.height * 0.1,
+          //   width: double.infinity,
+          //   //fit: BoxFit.cover,
+          // ),
 
 					//Recorder(),
 					Row(
@@ -207,10 +211,24 @@ class _RecordingPageState extends State<RecordingPage> {
 						]
 					),
 
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.005,
+            width: double.infinity,
+            //fit: BoxFit.cover,
+          ),
 
-          Text(
-            _statusText,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 5),
+            child: Text(
+              "Click to start/stop Recording or",
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.01,
+            width: double.infinity,
+            //fit: BoxFit.cover,
           ),
 
           Padding(
@@ -236,16 +254,9 @@ class _RecordingPageState extends State<RecordingPage> {
               ),
 							 */
               child: Text(
-                "ir para 'send_recording_page' (mudar)", //"Record Now",
+                "Go to sending Page", //"Record Now",
                 //style: Theme.of(context).textTheme.labelLarge,
               ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 5),
-            child: Text(
-              "Click to start/stop Recording",
-              style: TextStyle(fontSize: 14),
             ),
           ),
         ],

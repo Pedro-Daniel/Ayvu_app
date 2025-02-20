@@ -228,15 +228,15 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
                 },
               ),
               const SizedBox(height: 16),
-              Row(
-                children: [
-                  Checkbox(
-                    value: false,
-                    onChanged: (value) {},
-                  ),
-                  const Text("Consent data usage"),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     Checkbox(
+              //       value: false,
+              //       onChanged: (value) {},
+              //     ),
+              //     const Text("Consent data usage"),
+              //   ],
+              // ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
@@ -250,10 +250,11 @@ class _SpeakerProfilePageState extends State<SpeakerProfilePage> {
                 },
                 child: const Text("Record now"),
               ),
-              ElevatedButton(
-                onPressed: _clearDatabase,
-                child: Text('Limpar banco de dados'),
-              ),
+              // ESSE BOTÃO É MUITO IMPORTANTE E NÃO DEVE SER APAGADO
+              // ElevatedButton(
+              //   onPressed: _clearDatabase,
+              //   child: Text('Limpar banco de dados'),
+              // ),
               const SizedBox(height: 16),
               const Center(child: Text("or")),
               const SizedBox(height: 16),

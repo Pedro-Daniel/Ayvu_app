@@ -40,7 +40,7 @@ class SendRecordingPage extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      "Keep recording file at cell phone?",
+                      "Keep recording file at cell my phone?",
                       style: theme.textTheme.bodyMedium,
                     ),
                   ),

@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_launcher_icons: "^0.13.1"
+  flutter_launcher_icons: ^0.14.3
   path_provider: ^2.0.14
   english_words: ^4.0.0
   provider: ^6.0.0
@@ -21,10 +21,11 @@ dependencies:
   intl: ^0.20.2
   sqflite: ^2.4.1
   path: ^1.9.0
+  url_launcher: ^6.3.1
 
 flutter_icons:
-  android: "launcher_icon"
-  ios: true
+  # android: "launcher_icon"
+  android: true
   image_path: "assets/ayvu-logo.png"
 
 dev_dependencies:
@@ -38,3 +39,5 @@ flutter:
   
   assets:
   - assets/ayvu-logo.png
+  - assets/world-map.png
+  - assets/logo.png

@@ -12,9 +12,12 @@ class DatabankPage extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.1,
             width: 130,
-            child: Placeholder(), // Substituir pela imagem real
+            // child: Placeholder(), // Substituir pela imagem real
+            child: Image.asset("assets/logo.png")
           ),
-           
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.57,
+          ),
           IconButton(
           icon: const Icon(Icons.menu),
             onPressed: () {
@@ -43,7 +46,9 @@ class DatabankPage extends StatelessWidget {
             // Imagem ou gráfico
             AspectRatio(
               aspectRatio: 16 / 9,
-              child: Placeholder(), // Substituir pela imagem real
+              // child: Placeholder(), // Substituir pela imagem real
+              child: Image.asset("assets/world-map.png",
+              ), // Substituir pela imagem real
             ),
             const SizedBox(height: 24),
             // Campos de busca

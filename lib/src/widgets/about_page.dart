@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+Future<void> _abrirPaginaWeb() async {
+  final url = Uri.parse('https://github.com/Pedro-Daniel/Ayvu_app');
+    await launchUrl(url);
+}
 
 class AboutPage extends StatelessWidget {
   @override
@@ -8,9 +14,11 @@ class AboutPage extends StatelessWidget {
         title: Text('About Ayvu', style: Theme.of(context).textTheme.titleLarge,),
         
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           Text(
             "Help us make a better AYVU!",
             style: Theme.of(context).textTheme.headlineSmall,
@@ -21,34 +29,32 @@ class AboutPage extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 20),
-          _buildActionButton(context, "Visit our Github"),
-          _buildActionButton(context, "Visit the devs socials"),
-          _buildActionButton(context, "Report a bug"),
-        ],
+          _buildActionButton(context, "Visit our Github",),
+          _buildActionButton(context, "Visit the devs socials",),
+          _buildActionButton(context, "Report a bug",),
+          ],
+        ),
       ),
     );
   }
+  
 
   Widget _buildActionButton(BuildContext context, String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: OutlinedButton(
-        onPressed: () {
-          // Ação do botão
-        },
-        style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          side: BorderSide(color: Theme.of(context).colorScheme.primary),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+    return OutlinedButton(
+      onPressed: () {
+        _abrirPaginaWeb();
+      },
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(color: Theme.of(context).colorScheme.primary),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-            fontSize: 14,
-          ),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.primary,
+          fontSize: 14,
         ),
       ),
     );
