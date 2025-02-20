@@ -1,11 +1,18 @@
-import 'package:ayvu_app/src/widgets/send_recording_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 // pacotes para implementar a gravação de áudio:
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+
+// widgets das páginas
+import 'package:ayvu_app/src/widgets/send_recording_page.dart';
+
+// widgets de utilitários:
+//import 'package:ayvu_app/src/widgets_recording/recorder.dart';
+
 import 'DB/database_helper.dart';
+
+
 
 class RecordingPage extends StatefulWidget {
   @override
@@ -13,7 +20,9 @@ class RecordingPage extends StatefulWidget {
 }
 
 class _RecordingPageState extends State<RecordingPage> {
-  FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  //FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+	FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+
   bool _isRecording = false;
   String _statusText = 'Press to Record';
   String _filePath = "";
@@ -41,6 +50,15 @@ class _RecordingPageState extends State<RecordingPage> {
         _isRecording = false;
         _statusText = 'Stoping Recording';
       });
+
+			Future.delayed(Duration(seconds: 1), () {
+      if (!_isRecording) {
+				setState(() {
+        	_statusText = 'Recording Stoped';
+      	});
+			}	
+			});
+
     } else {
       // Solicitar permissão para o microfone
       PermissionStatus permissionStatus = await Permission.microphone.request();
@@ -92,17 +110,22 @@ class _RecordingPageState extends State<RecordingPage> {
     }
   }
 
+	Future<void> _togglePauseRecording() async {
+    // ainda não implementada
+		return;
+  }
+
   @override
   void dispose() {
-    _recorder.closeRecorder();
+    //_recorder.closeRecorder();
     super.dispose();
-  }
+  } /* */
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Upload your recording!'),
+        title: const Text('Recording Page'),
       ),
       body: Column(
         children: [
@@ -122,24 +145,74 @@ class _RecordingPageState extends State<RecordingPage> {
               ],
             ),
           ),
+
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.1,
             width: double.infinity,
             //fit: BoxFit.cover,
           ),
+
           ElevatedButton(
             onPressed: _toggleRecording,
             child: Text(_isRecording ? 'Stop Record' : 'Start Record'),
           ),
+
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.1,
             width: double.infinity,
             //fit: BoxFit.cover,
           ),
+
+					//Recorder(),
+					Row(
+						mainAxisAlignment: MainAxisAlignment.center,
+						children: <Widget>[
+							Material(
+								//color: Theme.of(context).colorScheme.primary, // Transparente para mostrar apenas o contorno
+								shape: RoundedRectangleBorder(
+									side: BorderSide(color: Theme.of(context).colorScheme.primary,),
+									borderRadius: BorderRadius.circular(5),
+								),
+								
+								child: Padding(
+									padding: EdgeInsets.all(8),
+									child: Row(
+										mainAxisSize: MainAxisSize.min, // Ajusta o tamanho ao conteúdo
+										children: [
+											IconButton(
+												onPressed: _toggleRecording,
+												icon: _isRecording ? Icon(Icons.stop_circle_outlined) : Icon(Icons.mic),
+											),
+											IconButton(
+												onPressed: _togglePauseRecording,
+												icon: _isRecording ? Icon(Icons.pause) : Icon(Icons.pause, color:Theme.of(context).scaffoldBackgroundColor),
+											),
+											/* 
+											_isRecording ? LinearProgressIndicator(
+																			value: 100.0 / 160.0 * (_dbLevel ?? 1) / 100,
+																			valueColor: const AlwaysStoppedAnimation<Color>(Colors.indigo),
+																			backgroundColor: Theme.of(context).colorScheme.primary,
+																			)
+																	: Container(),
+											*/
+
+											Text(
+												_statusText,
+												//style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+											),
+										],
+									),
+								),
+							),
+						]
+					),
+
+
           Text(
             _statusText,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
+
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: ElevatedButton(
